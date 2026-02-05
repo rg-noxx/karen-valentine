@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karen 💕</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family:'Inter', sans-serif; }
+    body {
+      min-height:100vh;
+      display:flex; justify-content:center; align-items:center;
+      overflow:hidden;
+      background: linear-gradient(135deg, #ffe4ec, #fdf6ff, #fbe8d3);
+      position: relative;
+    }
+
+    /* Floating shapes */
+    .shape {
+      position: absolute;
+      width: 30px; height:30px;
+      border-radius: 50%;
+      opacity:0.3;
+      pointer-events:none;
+      animation: float 8s infinite;
+    }
+    .heart { font-size: 1.8rem; position: absolute; animation: float 6s ease-in-out infinite; cursor:pointer; }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg);}
+      100% { transform: translateY(0) rotate(360deg);}
+    }
+
+    /* Screens */
+    .screen { text-align:center; padding:24px; width:100%; max-width:420px; z-index:10; }
+    h1,h2 { font-family:'Pacifico', cursive; }
+    h1 { font-size:2.2rem; margin-bottom:10px; }
+    h2 { font-size:1.8rem; margin-bottom:20px; }
+    p { font-size:1rem; line-height:1.6; margin-bottom:20px; }
+
+    /* Buttons */
+    button {
+      border:none; border-radius:999px; padding:14px 26px;
+      font-size:1rem; cursor:pointer; margin:10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .yes {
+      background:#ff6fa5; color:white;
+      box-shadow:0 8px 20px rgba(255,111,165,0.4);
+      animation:pulse 1.8s infinite;
+    }
+    .yes:hover { transform: scale(1.08); }
+    .no {
+      background:#f3d6e1; color:#5b2b3c; position:relative;
+    }
+    .hidden { display:none; }
+
+    @keyframes pulse {
+      0%{transform:scale(1);} 50%{transform:scale(1.06);} 100%{transform:scale(1);}
+    }
+
+    /* Confetti */
+    .celebrate { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:9; }
+    .confetti {
+      position:absolute; font-size:1.4rem; animation: fall 3s linear infinite; opacity:0.8;
+    }
+    @keyframes fall { from{transform:translateY(-10%);} to{transform:translateY(110vh);} }
+  </style>
+</head>
+
+<body>
+  <!-- floating pastel circles -->
+  <div class="shape" style="background:#ffd1dc; top:10%; left:15%; width:40px;height:40px;"></div>
+  <div class="shape" style="background:#fbc0e3; top:50%; left:70%; width:25px;height:25px;"></div>
+  <div class="shape" style="background:#ffe0b5; top:30%; left:50%; width:35px;height:35px;"></div>
+  <div class="shape" style="background:#fcd5f5; top:70%; left:20%; width:30px;height:30px;"></div>
+
+  <!-- entry screen -->
+  <div class="screen" id="intro">
+    <div class="heart" title="tiny fact: you’re cute">💗</div>
+    <h1>Hey Karen…</h1>
+    <p>I made something just for you 💕<br>Because words alone didn’t feel like enough.</p>
+    <button class="yes" onclick="start()">Continue ✨</button>
+  </div>
+
+  <!-- question screen -->
+  <div class="screen hidden" id="question">
+    <h2>💌 Karen, will you be my Valentine? 💌</h2>
+    <button class="yes" onclick="sayYes()">YES 💖</button>
+    <button class="no" id="noBtn">NO 😶</button>
+  </div>
+
+  <!-- yes screen -->
+  <div class="screen hidden" id="yesScreen">
+    <div class="celebrate" id="confettiBox"></div>
+    <h2>YAY 💕</h2>
+    <p>You just made my whole day.<br>I don’t know how you do it, but you always feel like the right choice.</p>
+    <p><strong>Best decision you’ve made today 💖</strong></p>
+
+    <h2>So…</h2>
+    <p>I was thinking maybe we do something cute together 🌙</p>
+
+    <div class="options">
+      <button>🍝 Dinner</button>
+      <button>🎬 Movie</button>
+      <button>🌌 Walk under the stars</button>
+    </div>
+
+    <p style="margin-top:20px;">I’d really love to spend Valentine’s with you, Karen 💗</p>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const messages = ["Be serious 😏","Wrong answer bestie","Try again 💀","Nice try 😜","Absolutely not 😌"];
+    noBtn.addEventListener("mouseover", () => {
+      const x=Math.random()*200-100;
+      const y=Math.random()*200-100;
+      noBtn.style.transform=`translate(${x}px,${y}px)`;
+      noBtn.textContent = messages[Math.floor(Math.random()*messages.length)];
+    });
+
+    function start(){
+      document.getElementById("intro").classList.add("hidden");
+      document.getElementById("question").classList.remove("hidden");
+    }
+
+    function sayYes(){
+      document.getElementById("question").classList.add("hidden");
+      document.getElementById("yesScreen").classList.remove("hidden");
+      launchConfetti();
+    }
+
+    function launchConfetti(){
+      const box=document.getElementById("confettiBox");
+      const emojis=["💖","💗","✨","💘","🌸"];
+      for(let i=0;i<40;i++){
+        const span=document.createElement("span");
+        span.classList.add("confetti");
+        span.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+        span.style.left=Math.random()*100+"vw";
+        span.style.animationDelay=Math.random()*2+"s";
+        box.appendChild(span);
+      }
+    }
+  </script>
+</body>
+</html>
